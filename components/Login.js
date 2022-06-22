@@ -19,7 +19,7 @@ export default function Login() {
         boxShadow="dark-lg"
         >
           <Box
-           bgColor="#722DA9"
+           bgColor="#805ad5"
             w="fit-content"
             p={5}
             rounded="2xl"

@@ -25,7 +25,7 @@ export default function Sidebar() {
       direction="column"
     >
       <Flex 
-      bg="#4a4948" 
+      bg="#403D3D" 
       w="100%" h="85px" 
       align="center"
       justifyContent="space-between"
@@ -51,7 +51,7 @@ export default function Sidebar() {
         Nowy Chat
     </Button>
 
-    <Flex overflowY="scroll" direction="column" sx={{scrollbarWidth:"none"}} >
+    <Flex overflowX="hidden" direction="column" sx={{scrollbarWidth: "none"}} >
         <Chat />
         <Chat />
         <Chat />
