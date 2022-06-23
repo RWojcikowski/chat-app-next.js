@@ -1,8 +1,15 @@
 import {Avatar, Button,  Flex,  FormControl,  Heading,  Input,  Text,} from "@chakra-ui/react";
 import Head from "next/head";
 import Sidebar from "../../components/Sidebar";
+import { useRouter } from "next/router";
+import { useCollectionData, useDocumentData } from "react-firebase-hooks/firestore";
+import { collection, query, orderBy} from "firebase/firestore";
+import { db, auth } from "../../firebaseconfig";
+import { useAuthState } from 'react-firebase-hooks/auth';
+import getOtherEmail from "../../utils/getOtherEmail";
+import { doc } from "firebase/firestore";
 
-const TopBar = () => {
+const TopBar = ({email}) => {
   return (
     <Flex
       p={5}
@@ -14,8 +21,7 @@ const TopBar = () => {
     >
       <Avatar src="" marginEnd={4} />
       <Heading size="lg" color="white">
-        {" "}
-        nazwa@email.com
+        {email}
       </Heading>
     </Flex>
   );
@@ -31,6 +37,31 @@ const Bottombar = () => {
   );
 };
 export default function Chat() {
+  
+  const router = useRouter();
+  const {id} = router.query;
+  const [user] = useAuthState(auth);
+
+  const q = query(collection(db, `chats/${id}/messages`), orderBy("timestamp"));
+  const[messages] = useCollectionData(q);
+
+const[chat] = useDocumentData(doc(db, "chats", id));
+
+
+
+  const getMessages = () =>{
+    messages?.map(msg =>{
+  const sender = msg.sender === user.email
+
+      return(
+      <Flex key={Math.random()} alignSelf={sender ? "flex-start": "flex-end"} bg= {sender ? "#805ad5" : "#C00A0A"  } color="#FFF" w="fit-content" minWidth="100px" borderRadius="lg" p={2} m={1}>
+        <Text>{msg.text}</Text>
+        </Flex>
+
+      )
+    })
+    }
+
   return (
 
     <Flex h="100vh" bg="#403D3D">
@@ -39,161 +70,11 @@ export default function Chat() {
        </Head> 
       <Sidebar />
       <Flex flex={1} direction="column">
-        <TopBar />
+        <TopBar email={getOtherEmail(chat?.users, user)}/>
 
-        <Flex
-          flex={1}
-          direction="column"
-          pt={4}
-          mx={5}
-          overflowX="none"
-          sx={{ scrollbarWidth: "none" }}
+        <Flex flex={1} direction="column" pt={4} mx={5} overflowX="none" sx={{ scrollbarWidth: "none" }}
         >
-          <Flex
-            bg="#805ad5"
-            color="#FFF"
-            w="fit-content"
-            minWidth="100px"
-            borderRadius="lg"
-            p={2}
-            m={1}
-          >
-            <Text> to jest jakas wiadomość</Text>
-          </Flex>
-          <Flex
-            bg="#805ad5"
-            color="#FFF"
-            w="fit-content"
-            minWidth="100px"
-            borderRadius="lg"
-            p={2}
-            m={1}
-          >
-            <Text> wiadomość</Text>
-          </Flex>
-          <Flex
-            bg="#B52828"
-            color="#FFF"
-            w="fit-content"
-            minWidth="100px"
-            borderRadius="lg"
-            p={2}
-            m={1}
-            alignSelf="flex-end"
-          >
-            <Text> to jest jakas wiadomość</Text>
-          </Flex>
-          <Flex
-            bg="#805ad5"
-            color="#FFF"
-            w="fit-content"
-            minWidth="100px"
-            borderRadius="lg"
-            p={2}
-            m={1}
-          >
-            <Text> to jest jakas wiadomość</Text>
-          </Flex>
-          <Flex
-            bg="#805ad5"
-            color="#FFF"
-            w="fit-content"
-            minWidth="100px"
-            borderRadius="lg"
-            p={2}
-            m={1}
-          >
-            <Text> wiadomość</Text>
-          </Flex>
-          <Flex
-            bg="#B52828"
-            color="#FFF"
-            w="fit-content"
-            minWidth="100px"
-            borderRadius="lg"
-            p={2}
-            m={1}
-            alignSelf="flex-end"
-          >
-            <Text> to jest jakas wiadomość</Text>
-          </Flex>
-          <Flex
-            bg="#805ad5"
-            color="#FFF"
-            w="fit-content"
-            minWidth="100px"
-            borderRadius="lg"
-            p={2}
-            m={1}
-          >
-            <Text> to jest jakas wiadomość</Text>
-          </Flex>
-          <Flex
-            bg="#805ad5"
-            color="#FFF"
-            w="fit-content"
-            minWidth="100px"
-            borderRadius="lg"
-            p={2}
-            m={1}
-          >
-            <Text> wiadomość</Text>
-          </Flex>
-          <Flex
-            bg="#B52828"
-            color="#FFF"
-            w="fit-content"
-            minWidth="100px"
-            borderRadius="lg"
-            p={2}
-            m={1}
-            alignSelf="flex-end"
-          >
-            <Text> to jest jakas wiadomość</Text>
-          </Flex>
-          <Flex
-            bg="#805ad5"
-            color="#FFF"
-            w="fit-content"
-            minWidth="100px"
-            borderRadius="lg"
-            p={2}
-            m={1}
-          >
-            <Text> to jest jakas wiadomość</Text>
-          </Flex>
-          <Flex
-            bg="#805ad5"
-            color="#FFF"
-            w="fit-content"
-            minWidth="100px"
-            borderRadius="lg"
-            p={2}
-            m={1}
-          >
-            <Text> wiadomość</Text>
-          </Flex>
-          <Flex
-            bg="#B52828"
-            color="#FFF"
-            w="fit-content"
-            minWidth="100px"
-            borderRadius="lg"
-            p={2}
-            m={1}
-            alignSelf="flex-end"
-          >
-            <Text> to jest jakas wiadomość</Text>
-          </Flex>
-          <Flex
-            bg="#805ad5"
-            color="#FFF"
-            w="fit-content"
-            minWidth="100px"
-            borderRadius="lg"
-            p={2}
-            m={1}
-          ></Flex>
+        {getMessages}
         </Flex>
 
         <Bottombar />
@@ -201,3 +82,27 @@ export default function Chat() {
     </Flex>
   );
 }
+
+
+{/* <Flex
+bg="#805ad5"
+color="#FFF"
+w="fit-content"
+minWidth="100px"
+borderRadius="lg"
+p={2}
+m={1}
+>
+<Text> to jest jakas wiadomość</Text>
+</Flex>
+<Flex
+bg="#805ad5"
+color="#FFF"
+w="fit-content"
+minWidth="100px"
+borderRadius="lg"
+p={2}
+m={1}
+>
+<Text> wiadomość</Text>
+</Flex> */}

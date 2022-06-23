@@ -9,7 +9,7 @@ export default function Login() {
 
  
   return (
-    <>
+    <Box  bgGradient="linear(to-r, #360F37, #0F2D33)" >
       <Head>
         <title>Login</title>
       </Head>
@@ -32,13 +32,13 @@ export default function Login() {
           >
             <ChatIcon w="100px" h="100px" color="#fff" />
           </Box>
-          <Text fontSize="30px" color="grey">
-            Chat App
+          <Text fontSize="25px" color="grey">
+            Next Chat App
           </Text>
           <Button onClick={()=> signInWithGoogle("",{prompt:"select_account"}) } boxShadow="md" colorScheme="purple"> Zaloguj przez Google</Button>
         </Stack>
 
       </Center>
-    </>
+    </Box>
   );
 }
