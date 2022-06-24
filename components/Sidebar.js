@@ -10,35 +10,33 @@ import { collection, addDoc } from "firebase/firestore";
 import { db } from "../firebaseconfig";
 import getOtherEmail from "../utils/getOtherEmail";
 import { useRouter } from "next/router";
-import { async } from "@firebase/util";
-
-
 
 
 export default function Sidebar() {
-const [user] = useAuthState(auth);
-const [snapshot, loading, error]= useCollection(collection(db,"chats"));
-const chats = snapshot?.docs.map(doc =>({id: doc.id, ...doc.data() }));
-const router = useRouter();
+  const [user] = useAuthState(auth);
+  const [snapshot, loading, error] = useCollection(collection(db, "chats"));
+  const chats = snapshot?.docs.map(doc => ({id: doc.id, ...doc.data()}));
+  const router = useRouter();
 
-const redirect = (id) =>{
-router.push(`/chat/$(id)`);
-}
-
-const chatExists = email => chats?.find(chat => (chat.users.includes(user.email) && chat.users.includes(email)))
-
-const newChat = async () => {
-  const input = prompt("Enter email of chat recipient");
-  if (!chatExists(input) && (input != user.email)) {
-    await addDoc(collection(db, "chats"), { users: [user.email, input] })
+  const redirect = (id) => {
+    router.push(`/chat/${id}`);
   }
-}
 
-const chatlist =( )=>{
-    return (
-        chats?.filter(chat => chat.users.includes(user.email))
-        .map(
-          chat => 
+  const chatExists = email => chats?.find(chat => (chat.users.includes(user.email) && chat.users.includes(email)))
+
+  const newChat = async () => {
+    const input = prompt("Enter email of chat recipient");
+    if (!chatExists(input) && (input != user.email)) {
+      await addDoc(collection(db, "chats"), { users: [user.email, input] })
+    }
+  }
+
+  //linia 38 // filter(chat => chat.users.includes(user.email)) jak rozwiazac problem ?
+  
+const chatList = () => {
+    return (    
+      chats?.map(
+        chat => 
 		<Flex key={Math.random()} p={3} align="center"
     	_hover={{bg:"#4a4948", cursor:"pointed"}} onClick={() => redirect(chat.id)}>
       		<Avatar src="" marginEnd={4}/>
@@ -49,7 +47,6 @@ const chatlist =( )=>{
     )
 }
 
-// console.log(snapshot);
   return (
     <Flex
       bg="#403D3D"
@@ -88,7 +85,7 @@ const chatlist =( )=>{
     </Button>
 
     <Flex overflowX="none" direction="column" sx={{scrollbarWidth: "none"}} flex={1} >
-      {chatlist()}
+      {chatList()}
     </Flex>
 
 
