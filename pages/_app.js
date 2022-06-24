@@ -11,8 +11,8 @@ function MyApp({ Component, pageProps }) {
     return(
     <ChakraProvider>
      
-      <Center h="100vh"> 
-        <Spinner color="purple" size="xl"/>
+      <Center h="100vh" bg="#403D3D"> 
+        <Spinner color="purple" thickness="5px" size="xl"/>
       </Center>
      
     </ChakraProvider>

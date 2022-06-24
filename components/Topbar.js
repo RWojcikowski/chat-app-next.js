@@ -10,7 +10,7 @@ export default function Topbar({email}) {
         h="80px"
         w="100%"
       >
-        <Avatar src="" marginEnd={4} />
+        <Avatar src="" marginEnd={5} />
         <Heading size="lg" color="white">
           {email}
         </Heading>

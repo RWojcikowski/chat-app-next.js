@@ -31,17 +31,18 @@ export default function Sidebar() {
     }
   }
 
-  //linia 38 // filter(chat => chat.users.includes(user.email)) jak rozwiazac problem ?
+  
   
 const chatList = () => {
     return (    
-      chats?.map(
+      chats?.filter(chat => chat.users.includes(user.email))
+      .map(
         chat => 
 		<Flex key={Math.random()} p={3} align="center"
     	_hover={{bg:"#4a4948", cursor:"pointed"}} onClick={() => redirect(chat.id)}>
       		<Avatar src="" marginEnd={4}/>
       		
-            <Text color="white" >{getOtherEmail(chat.users, user)}</Text>
+            <Text color="white" word-wrap="break-word" >{getOtherEmail(chat.users, user)}</Text>
         </Flex>
         )
     )
@@ -50,7 +51,7 @@ const chatList = () => {
   return (
     <Flex
       bg="#403D3D"
-      w="300px"
+      w="350px"
       h="100%"
       borderEnd="1px solid"
       borderColor="gray.200"

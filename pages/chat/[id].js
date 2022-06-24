@@ -43,7 +43,7 @@ export default function Chat() {
 
   return (
 
-    <Flex h="100vh" bg="#403D3D">
+    <Flex h="100vh" w="100%" bg="#403D3D">
       <Head>
        <title>Chat App</title>
        </Head> 
