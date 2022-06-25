@@ -1,3 +1,14 @@
+## Live demo 
+
+## Technologies:
+```
+- Next.js 
+- Chakra UI 
+- Firebase
+- Firebase React Router
+- Auth with Google
+```
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
